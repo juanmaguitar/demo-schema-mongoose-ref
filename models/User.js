@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const rp = require('request-promise')
 const collection = 'users'
 
+const rp = require('request-promise')
 const randomBeatle = require('./handlers/randomBeatle')
 
 const UserSchema = new Schema({
