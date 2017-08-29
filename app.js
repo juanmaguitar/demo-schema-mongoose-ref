@@ -8,28 +8,46 @@ const User = require('./models/User.js')
 
 //console.log ( User.stats() )
 
-//const julian = new User({ name: 'julian' })
+const juanma = new User({ name: 'juanma' })
 
-// juanma.findSimilarNames(function (err, names) {
-//   if (err) throw err
-//   console.log (`There are ${names.length} with the same name`)
-// })
+User.findBySimilarName( juanma.name )
+  .then( users =>  users.map(({name, _id}) => ({name, _id})))
+  .then( users => {
+    console.log('results of User.findBySimilarName')
+    console.log(users)
+  })
 
-//julian.save()
+juanma.findUsersWithSameName()
+  .then( users =>  users.map(({name, _id}) => ({name, _id})))
+  .then( users => {
+    console.log('results of juanma.findUsersWithSameName')
+    console.log(users)
+  })
+
+/*
+results of User.findBySimilarName
+[ { name: 'juanma', _id: 59a569e5dd936584b4a08a38 },
+  { name: 'juanmanuel', _id: 59a56b91c5154389d5652994 } ]
+results of juanma.findUsersWithSameName
+[ { name: 'juanma', _id: 59a569e5dd936584b4a08a38 }
+ */
 
 
-const manuel = new User({ name: 'manuel' })
-const paco = new User({ name: 'paco' })
-const maria = new User({ name: 'maria' })
-const julian = new User({ name: 'julian' })
-const andres = new User({ name: 'andres' })
+juanma.save()
 
 
-manuel.save()
-paco.save()
-maria.save()
-julian.save()
-andres.save()
+// const manuel = new User({ name: 'manuel' })
+// const paco = new User({ name: 'paco' })
+// const maria = new User({ name: 'maria' })
+// const julian = new User({ name: 'julian' })
+// const andres = new User({ name: 'andres' })
+
+
+// manuel.save()
+// paco.save()
+// maria.save()
+// julian.save()
+// andres.save()
 
 // juanma.save()
 //   .then(user => {

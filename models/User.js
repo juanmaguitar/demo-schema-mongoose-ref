@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const repos = require('../data/repos.json')
+const rp = require('request-promise')
 const collection = 'users'
 
 const randomBeatle = require('./handlers/randomBeatle')
@@ -20,17 +20,27 @@ const UserSchema = new Schema({
 }, { collection })
 
 
-UserSchema.methods.findSimilarNames = function (cb) {
-  return this.model('User').find({ name: this.name }, cb)
+UserSchema.statics.findBySimilarName = function (name) {
+  return this.find({ name: new RegExp(name, 'i') });
 }
 
-UserSchema.pre("save", function(next) {
+UserSchema.methods.findUsersWithSameName = function() {
+  return this.model('User').find({ name: this.name })
+}
+
+UserSchema.pre('save', function(next) {
 
   var self = this
 
-  // rp('https://api.github.com/users/juanmaguitar/repos')
-    // .then(res => res.json())
-  Promise.resolve(repos)
+  const options = {
+    url: 'https://api.github.com/users/juanmaguitar/repos',
+    headers: {
+      'User-Agent': 'Awesome-MyBlog-App'
+    }
+  }
+
+  rp(options)
+    .then(repos => JSON.parse(repos))
     .then(repos => repos.map( repo => repo.name ))
     .then(reposNames => {
       const randomPosition = Math.floor(Math.random()*reposNames.length)
@@ -38,6 +48,7 @@ UserSchema.pre("save", function(next) {
     })
     .then( randomRepoName => {
       self.favoriteRepo = randomRepoName
+      console.log(`added ${randomRepoName} to user ${self.name}`);
       next()
     })
 
