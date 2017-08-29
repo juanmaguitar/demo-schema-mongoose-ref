@@ -1,10 +1,7 @@
 function randomBeatle() {
-  const beatles = ['john', 'paul', 'george', 'ringo']
-  return function() {
-    const lengthBeatles = beatles.length
-    const randomPosition = Math.floor(Math.random()*lengthBeatles)
-    return beatles.splice(randomPosition,1)[0] || 'no more beatles'
-  }
+  const beatles = ['john','paul','george','ringo']
+  const randomPosition = Math.floor(Math.random()*4)
+  return beatles[randomPosition]
 }
 
 module.exports = randomBeatle
